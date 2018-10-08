@@ -17,6 +17,15 @@ defmodule Binance.OrderBookDepthStreamTest do
       assert Binance.OrderBookDepthStream.price_list(order_book, order_book_info_type) ==
         [6668.98, 6669.18, 6669.23, 6822.0]
     end
+
+    test "It raises an error for an incorrectly specified order book info type" do
+      order_book = order_book_depth_stream_info
+      order_book_info_type = "random order book info type"
+
+      assert_raise IncorrectOrderBookInfoType, "Incorrect order book info type specified", fn ->
+        Binance.OrderBookDepthStream.price_list(order_book, order_book_info_type)
+      end
+    end
   end
 
   def order_book_depth_stream_info do

@@ -19,6 +19,8 @@ defmodule Binance.OrderBookDepthStream do
          order_book_info(order_book, @ask)
       "bids" ->
          order_book_info(order_book, @bid)
+      _ ->
+        raise IncorrectOrderBookInfoType
     end
     |> extract_price
   end
@@ -34,4 +36,8 @@ defmodule Binance.OrderBookDepthStream do
     |> Map.get(order_book_info_type)
     |> List.flatten()
   end
+end
+
+defmodule IncorrectOrderBookInfoType do
+  defexception message: "Incorrect order book info type specified"
 end
