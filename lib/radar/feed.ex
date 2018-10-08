@@ -21,13 +21,7 @@ defmodule Feed do
     bids_price_list = Binance.OrderBookDepthStream.price_list(order_book, "bids")
     buy_orders_size = Kernel.length(bids_price_list)
 
-    if sell_orders_size > buy_orders_size do
-      IO.puts "BTC/USD #{sell_orders_size} sell walls detected at #{asks_price_list |> Enum.join(", ")}"
-    else
-      if buy_orders_size > sell_orders_size do
-        IO.puts "BTC/USD #{buy_orders_size} buy walls detected at #{bids_price_list |> Enum.join(", ")}"
-      end
-    end
+    broadcast_message(sell_orders_size, asks_price_list, buy_orders_size, bids_price_list)
 
     {:ok, :fake_state}
   end
@@ -53,5 +47,15 @@ defmodule Feed do
 
   defp convert_string_keys_as_atoms(parsed_message) do
     for {key, val} <- parsed_message, into: %{}, do: {String.to_atom(key), val}
+  end
+
+  defp broadcast_message(sell_orders_size, asks_price_list, buy_orders_size, bids_price_list) do
+    if sell_orders_size > buy_orders_size do
+      IO.puts "BTC/USD #{sell_orders_size} sell walls detected at #{asks_price_list |> Enum.join(", ")}"
+    else
+      if buy_orders_size > sell_orders_size do
+        IO.puts "BTC/USD #{buy_orders_size} buy walls detected at #{bids_price_list |> Enum.join(", ")}"
+      end
+    end
   end
 end
