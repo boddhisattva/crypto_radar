@@ -3,7 +3,7 @@ defmodule Binance.OrderBookDepthStreamTest do
 
   describe "price_list" do
     test "It extracts a list of prices related to the bids order book info type" do
-      order_book = order_book_depth_stream_info
+      order_book = order_book_depth_stream_info()
       order_book_info_type = "bids"
 
       assert Binance.OrderBookDepthStream.price_list(order_book, order_book_info_type) ==
@@ -11,7 +11,7 @@ defmodule Binance.OrderBookDepthStreamTest do
     end
 
     test "It extracts a list of prices related to the asks order book info type" do
-      order_book = order_book_depth_stream_info
+      order_book = order_book_depth_stream_info()
       order_book_info_type = "asks"
 
       assert Binance.OrderBookDepthStream.price_list(order_book, order_book_info_type) ==
@@ -19,7 +19,7 @@ defmodule Binance.OrderBookDepthStreamTest do
     end
 
     test "It raises an error for an incorrectly specified order book info type" do
-      order_book = order_book_depth_stream_info
+      order_book = order_book_depth_stream_info()
       order_book_info_type = "random order book info type"
 
       assert_raise IncorrectOrderBookInfoType, "Incorrect order book info type specified", fn ->
