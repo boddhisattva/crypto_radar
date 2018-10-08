@@ -1,4 +1,11 @@
 defmodule Binance.OrderBookDepthStream do
+  @moduledoc """
+  Diff. Websocket Depth Stream for Binance Exchange
+
+  One can learn more about this and other websocket streams for Binance Exchange via:
+  https://github.com/binance-exchange/binance-official-api-docs/blob/master/web-socket-streams.md
+  """
+
   defstruct(
     e: "depthUpdate",
     E: 0,
@@ -13,6 +20,10 @@ defmodule Binance.OrderBookDepthStream do
   @bid :b
   @flattened_list_price_element_index 2
 
+  @doc """
+  Extract the price list based on whether the order book info type is asks or bids
+  """
+  @spec price_list(Binance.OrderBookDepthStream, String) :: list
   def price_list(order_book, order_book_info_type) do
     case order_book_info_type do
       "asks" ->
