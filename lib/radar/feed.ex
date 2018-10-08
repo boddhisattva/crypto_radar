@@ -14,9 +14,7 @@ defmodule Feed do
   end
 
   def handle_frame({:text, msg}, :fake_state) do
-    parsed_message = Jason.decode!(msg)
-    par_msg = for {key, val} <- parsed_message, into: %{}, do: {String.to_atom(key), val}
-    order_book = struct(Binance.OrderBookDepthStream, par_msg)
+    order_book = initialize_order_book(msg)
 
     asks_price_list = Binance.OrderBookDepthStream.asks_price_list(order_book)
     asks_length =  Kernel.length(asks_price_list)
@@ -42,5 +40,19 @@ defmodule Feed do
 
   def handle_disconnect(disconnect_map, state) do
     super(disconnect_map, state)
+  end
+
+  defp initialize_order_book(msg) do
+    struct(Binance.OrderBookDepthStream, parse_message(msg))
+  end
+
+  defp parse_message(message) do
+    message
+    |> Jason.decode!
+    |> convert_string_keys_as_atoms
+  end
+
+  defp convert_string_keys_as_atoms(parsed_message) do
+    for {key, val} <- parsed_message, into: %{}, do: {String.to_atom(key), val}
   end
 end
