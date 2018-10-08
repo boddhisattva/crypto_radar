@@ -17,16 +17,15 @@ defmodule Feed do
     order_book = initialize_order_book(msg)
 
     asks_price_list = Binance.OrderBookDepthStream.price_list(order_book, "asks")
-    asks_length =  Kernel.length(asks_price_list)
+    sell_orders_size = Kernel.length(asks_price_list)
     bids_price_list = Binance.OrderBookDepthStream.price_list(order_book, "bids")
-    bids_length = Kernel.length(bids_price_list)
+    buy_orders_size = Kernel.length(bids_price_list)
 
-    if asks_length > bids_length do
-      IO.puts "BTC/USD #{asks_length} sell walls detected at #{asks_price_list |> Enum.join(", ")}"
+    if sell_orders_size > buy_orders_size do
+      IO.puts "BTC/USD #{sell_orders_size} sell walls detected at #{asks_price_list |> Enum.join(", ")}"
     else
-      if bids_length > asks_length do
-        IO.puts "BTC/USD #{bids_length} buy walls detected at #{bids_price_list |> Enum.join(", ")}"
-      else
+      if buy_orders_size > sell_orders_size do
+        IO.puts "BTC/USD #{buy_orders_size} buy walls detected at #{bids_price_list |> Enum.join(", ")}"
       end
     end
 
