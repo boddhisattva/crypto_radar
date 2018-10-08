@@ -23,6 +23,7 @@ defmodule Radar.MixProject do
   defp deps do
     [
       {:websockex, "~> 0.4.0"},
+      {:jason, "~> 1.1"}
     ]
   end
 end
