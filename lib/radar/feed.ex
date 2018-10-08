@@ -16,9 +16,9 @@ defmodule Feed do
   def handle_frame({:text, msg}, :fake_state) do
     order_book = initialize_order_book(msg)
 
-    asks_price_list = Binance.OrderBookDepthStream.asks_price_list(order_book)
+    asks_price_list = Binance.OrderBookDepthStream.price_list(order_book, "asks")
     asks_length =  Kernel.length(asks_price_list)
-    bids_price_list = Binance.OrderBookDepthStream.bids_price_list(order_book)
+    bids_price_list = Binance.OrderBookDepthStream.price_list(order_book, "bids")
     bids_length = Kernel.length(bids_price_list)
 
     if asks_length > bids_length do

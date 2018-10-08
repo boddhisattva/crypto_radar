@@ -1,37 +1,37 @@
 defmodule Binance.OrderBookDepthStream do
   defstruct(
-      e: "depthUpdate",
-      E: 0,
-      s: "",
-      U: 0,
-      u: 0,
-      b: [],
-      a: []
+    e: "depthUpdate",
+    E: 0,
+    s: "",
+    U: 0,
+    u: 0,
+    b: [],
+    a: []
   )
 
-  def asks_price_list(order_book) do
-    order_book
-    |> asks
+  @ask :a
+  @bid :b
+  @flattened_list_price_element_index 2
+
+  def price_list(order_book, order_book_info_type) do
+    case order_book_info_type do
+      "asks" ->
+         order_book_info(order_book, @ask)
+      "bids" ->
+         order_book_info(order_book, @bid)
+    end
     |> extract_price
   end
 
-  def bids_price_list(order_book) do
-    order_book
-    |> bids
-    |> extract_price
-  end
-
-  defp extract_price(order_info) do
-    order_info
-    |> Enum.take_every(2)
+  defp extract_price(order_book_info) do
+    order_book_info
+    |> Enum.take_every(@flattened_list_price_element_index)
     |> Enum.map(&String.to_float/1)
   end
 
-  defp asks(order_book) do
-    Map.get(order_book, :a) |> List.flatten()
-  end
-
-  defp bids(order_book) do
-    Map.get(order_book, :b) |> List.flatten()
+  defp order_book_info(order_book, order_book_info_type) do
+    order_book
+    |> Map.get(order_book_info_type)
+    |> List.flatten()
   end
 end
