@@ -56,15 +56,19 @@ defmodule Feed do
   defp broadcast_message(sell_orders_size, asks_price_list, buy_orders_size, bids_price_list) do
     if sell_orders_size > buy_orders_size do
       IO.puts(
-        "BTC/USD #{sell_orders_size} sell #{walls(sell_orders_size)} detected at #{asks_price_list |> Enum.join(", ")}"
+        "[#{current_datetime_with_millisecond_precision}] BTC/USD #{sell_orders_size} sell #{walls(sell_orders_size)} detected at #{asks_price_list |> Enum.join(", ")}"
       )
     else
       if buy_orders_size > sell_orders_size do
         IO.puts(
-          "BTC/USD #{buy_orders_size} buy #{walls(buy_orders_size)} detected at #{bids_price_list |> Enum.join(", ")}"
+          "[#{current_datetime_with_millisecond_precision}] BTC/USD #{buy_orders_size} buy #{walls(buy_orders_size)} detected at #{bids_price_list |> Enum.join(", ")}"
         )
       end
     end
+  end
+
+  defp current_datetime_with_millisecond_precision do
+    DateTime.truncate(DateTime.utc_now(), :millisecond)
   end
 
   defp walls(_size = 1) do
