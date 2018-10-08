@@ -2,8 +2,10 @@ defmodule Feed do
   use WebSockex
   require Logger
 
+  @symbol "btcusdt"
+
   def start_link(opts \\ []) do
-    url = "wss://stream.binance.com:9443/ws/btcusdt@depth"
+    url = "wss://stream.binance.com:9443/ws/#{@symbol}@depth"
     WebSockex.start_link(url, __MODULE__, :fake_state, opts)
   end
 
