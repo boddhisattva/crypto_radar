@@ -27,9 +27,11 @@ defmodule Binance.OrderBookDepthStream do
   def price_list(order_book, order_book_info_type) do
     case order_book_info_type do
       "asks" ->
-         order_book_info(order_book, @ask)
+        order_book_info(order_book, @ask)
+
       "bids" ->
-         order_book_info(order_book, @bid)
+        order_book_info(order_book, @bid)
+
       _ ->
         raise IncorrectOrderBookInfoType
     end

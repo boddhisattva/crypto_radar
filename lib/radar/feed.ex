@@ -27,7 +27,7 @@ defmodule Feed do
   end
 
   def handle_disconnect(%{reason: {:local, reason}}, state) do
-    Logger.info("Local close with reason: #{inspect reason}")
+    Logger.info("Local close with reason: #{inspect(reason)}")
     {:ok, state}
   end
 
@@ -41,7 +41,7 @@ defmodule Feed do
 
   defp parse_message(message) do
     message
-    |> Jason.decode!
+    |> Jason.decode!()
     |> convert_string_keys_as_atoms
   end
 
@@ -51,10 +51,14 @@ defmodule Feed do
 
   defp broadcast_message(sell_orders_size, asks_price_list, buy_orders_size, bids_price_list) do
     if sell_orders_size > buy_orders_size do
-      IO.puts "BTC/USD #{sell_orders_size} sell walls detected at #{asks_price_list |> Enum.join(", ")}"
+      IO.puts(
+        "BTC/USD #{sell_orders_size} sell walls detected at #{asks_price_list |> Enum.join(", ")}"
+      )
     else
       if buy_orders_size > sell_orders_size do
-        IO.puts "BTC/USD #{buy_orders_size} buy walls detected at #{bids_price_list |> Enum.join(", ")}"
+        IO.puts(
+          "BTC/USD #{buy_orders_size} buy walls detected at #{bids_price_list |> Enum.join(", ")}"
+        )
       end
     end
   end
