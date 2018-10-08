@@ -23,7 +23,8 @@ defmodule Radar.MixProject do
   defp deps do
     [
       {:websockex, "~> 0.4.0"},
-      {:jason, "~> 1.1"}
+      {:jason, "~> 1.1"},
+      {:credo, "~> 0.10.0", only: [:dev, :test], runtime: false}
     ]
   end
 end

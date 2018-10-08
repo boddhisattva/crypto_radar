@@ -1,4 +1,8 @@
 defmodule Feed do
+  @moduledoc """
+    WebSocket feed from marketplace
+  """
+
   use WebSockex
   require Logger
 
